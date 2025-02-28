@@ -1,54 +1,30 @@
-<div class="container vh-100 d-flex justify-content-center align-items-center mt-4">
-  <div class="row w-100">
+<!-- MENU PRINCIPAL -->
+<div class="container-fluid d-flex justify-content-center align-items-center vh-100" *ngIf="!hiddenButtons">
+  <div class="row w-100 justify-content-center">
     <div class="col-md-6 d-flex justify-content-center">
-      <div class="card p-4 shadow-lg rounded-4" style="max-width: 400px; width: 100%;">
-
-        <button class="btn btn-dark rounded-3 mb-3 fw-bold" *ngIf="returnButton" (click)="returnOption()">Regresar</button>
-
+      <div class="card p-4 shadow-lg rounded-4" style="max-width: 400px; width: 100%;"> 
         <h5 class="text-center mb-4">Calculadora de métodos numéricos</h5>
-
-        <div id="Contenedor botones" *ngIf="!hiddenButtons">
+        <div id="Contenedor botones">
           <button type="button" class="btn btn-dark w-100 rounded-3 mb-2 fw-bold" (click)="cargarComponente('euler')">Euler mejorado</button>
           <button type="button" class="btn btn-dark w-100 rounded-3 mb-2 fw-bold" (click)="cargarComponente('runge-kutta')">Runge Kutta (4° orden)</button>
-          <button type="button" class="btn btn-dark w-100 rounded-3 mb-3  fw-bold" (click)="cargarComponente('newton-raphson')">Newton-Raphson</button>
+          <button type="button" class="btn btn-dark w-100 rounded-3 mb-3 fw-bold" (click)="cargarComponente('newton-raphson')">Newton-Raphson</button>
         </div>
-
-        <!-- Componente dinámico según el tipo seleccionado -->
-        <div *ngIf="componenteActual === 'euler'">
-          <app-euler-mejorado (resultadosCalculados)="mostrarResultados($event)"></app-euler-mejorado>
-        </div>
-        <div *ngIf="componenteActual === 'runge-kutta'">
-          <app-runge-kutta (resultadosCalculados)="mostrarResultados($event)"></app-runge-kutta>
-        </div>
-        <div *ngIf="componenteActual === 'newton-raphson'">
-          <app-newton-raphson (resultadosCalculados)="mostrarResultados($event)"></app-newton-raphson>
-        </div>
-      </div>
-    </div>
-
-    <!-- TABLA RESULTADOS -->
-    <div class="col-md-6 d-flex justify-content-center">
-      <div class="card p-4 shadow-lg rounded-4 w-100">
-        <h5 class="text-center mb-4">Resultados</h5>
-        <table class="table table-bordered text-center">
-          <thead class="table-dark">
-            <tr>
-              <th>Iteración</th>
-              <th>x</th>
-              <th>y</th>
-            </tr>
-          </thead>
-          <tbody>
-            @if (resultados != null) {
-              <tr *ngFor="let resultado of resultados; let i = index">
-                <td>{{ resultado.i }}</td>
-                <td>{{ resultado.x }}</td>
-                <td>{{ resultado.y }}</td>
-              </tr>            
-            }
-          </tbody>
-        </table>
       </div>
     </div>
   </div>
+</div>
+
+<!-- COMPONENTES DINAMICOS -->
+<div *ngIf="componenteActual === 'euler'">
+  <app-euler-mejorado (returnButtonChange)="returnOption($event)"></app-euler-mejorado>
+</div>
+<div *ngIf="componenteActual === 'runge-kutta'">
+  <app-runge-kutta (returnButtonChange)="returnOption($event)"></app-runge-kutta>
+</div>
+<div *ngIf="componenteActual === 'newton-raphson'">
+  <app-newton-raphson (returnButtonChange)="returnOption($event)"></app-newton-raphson>
+</div>
+
+<div class="footer" *ngIf="!hiddenButtons">
+  <p class="fw-bold text-secondary">Iceli 🩵</p>
 </div>

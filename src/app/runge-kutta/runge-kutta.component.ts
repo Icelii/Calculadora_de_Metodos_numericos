@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Output } from '@angular/core';
-import { FormBuilder, FormsModule, Validators } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import * as math from 'mathjs';
 
 @Component({
@@ -11,19 +11,28 @@ import * as math from 'mathjs';
   styleUrl: './runge-kutta.component.css',
 })
 export default class RungeKuttaComponent {
-  constructor(private FormBuilder: FormBuilder) {}
+  @Output() returnButtonChange = new EventEmitter<boolean>();
 
-  @Output() resultadosCalculados = new EventEmitter<{ i:number, x:number; y:number }[]>();
+  regresarAlMenu(){
+    this.returnButtonChange.emit(false);
+  }
 
-  rkFunc: string = '';
-  rkX0: number = 0;
-  rkY0: number = 0;
-  rkH: number = 0;
-  rkPasos: number = 0;
+  rkFunc:string = '';
+  rkX0:number = 0;
+  rkY0:number = 0;
+  rkH:number = 0;
+  rkPasos:number = 0;
+  resultados: { i:number , x:number; y:number }[] = [];
 
   ngOnInit() {}
 
   calcularRungeKutta() {
+
+    if (!this.rkFunc || this.rkX0 === null || this.rkY0 === null || this.rkH === null || this.rkPasos === null) {
+      alert('Por favor, completa todos los campos antes de calcular.');
+      return;
+    }
+
     const x0 = this.rkX0;
     const y0 = this.rkY0;
     const h = this.rkH;
@@ -32,19 +41,17 @@ export default class RungeKuttaComponent {
     let x = x0;
     let y = y0;
 
-    const resultados: { i:number , x:number; y:number }[] = [{ i:0, x, y }];
+    this.resultados = [];
 
-    for (let i = 1; i <= pasos; i++) {
+    for (let i = 0; i < pasos; i++) {
       const k1 = this.evaluarFuncion(this.rkFunc, x, y);
       const k2 = this.evaluarFuncion(this.rkFunc, x + h / 2, y + (h / 2) * k1);
       const k3 = this.evaluarFuncion(this.rkFunc, x + h / 2, y + (h / 2) * k2);
       const k4 = this.evaluarFuncion(this.rkFunc, x + h, y + h * k3);
       y = y + (h / 6) * (k1 + 2 * k2 + 2 * k3 + k4);
       x = x + h;
-      resultados.push({ i, x:math.round(x,4), y:math.round(y, 4) });
+      this.resultados.push({ i:i+1, x: math.round(x, 4), y: math.round(y, 4) });
     }
-
-    this.resultadosCalculados.emit(resultados);
   }
 
   evaluarFuncion(func: string, x: number, y: number) {

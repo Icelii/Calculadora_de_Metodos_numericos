@@ -1,23 +1,59 @@
-<form>
-    <div class="mb-3">
-      <label for="rkFunc" class="form-label">Función (dy/dx):</label>
-      <input type="text" class="form-control rounded-3" [(ngModel)]="rkFunc" name="rkFunc" placeholder="Ej: y - x^2 + 1">
+<div class="container vh-100 d-flex justify-content-center align-items-start mt-4">
+  <div class="row w-100">
+    <div class="col-md-6 d-flex justify-content-center mb-2">
+      <div class="card p-4 shadow-lg rounded-4"
+        style="max-width: 400px; width: 100%; height: auto; align-self: start;">
+        <button type="button" class="btn-close" aria-label="Close" *ngIf="returnButtonChange" (click)="regresarAlMenu()"></button>
+        <h5 class="text-center mb-4">Runge Kutta (4° orden)</h5>
+        <form #rkForm>
+          <div class="mb-3">
+            <label for="rkFunc" class="form-label">Función (dy/dx):</label>
+            <input type="text" class="form-control rounded-3" [(ngModel)]="rkFunc" name="rkFunc" placeholder="Ej: y - x^2 + 1">
+          </div>
+          <div class="mb-3">
+            <label for="rkX0" class="form-label">x0:</label>
+            <input type="number" class="form-control rounded-3" [(ngModel)]="rkX0" name="rkX0">
+          </div>
+          <div class="mb-3">
+            <label for="rkY0" class="form-label">y0:</label>
+            <input type="number" class="form-control rounded-3" [(ngModel)]="rkY0" name="rkY0">
+          </div>
+          <div class="mb-3">
+            <label for="rkH" class="form-label">h:</label>
+            <input type="number" class="form-control rounded-3" [(ngModel)]="rkH" name="rkH">
+          </div>
+          <div class="mb-3">
+            <label for="rkPasos" class="form-label">Pasos:</label>
+            <input type="number" class="form-control rounded-3" [(ngModel)]="rkPasos" name="rkPasos">
+          </div>
+          <button type="button" class="btn btn-dark w-100 rounded-3 mt-2 fw-bold" (click)="calcularRungeKutta()">Calcular</button>
+          <button type="button" class="btn btn-dark w-100 rounded-3 mt-2 fw-bold" (click)="rkForm.reset()">Limpiar</button>
+      </form>
+      </div>
     </div>
-    <div class="mb-3">
-      <label for="rkX0" class="form-label">x0:</label>
-      <input type="number" class="form-control rounded-3" [(ngModel)]="rkX0" name="rkX0">
+
+    <!-- TABLA RESULTADOS -->
+    <div class="col-md-6 d-flex justify-content-center mb-4">
+      <div class="card p-4 shadow-lg rounded-4 w-100 table-responsive"
+        style="flex-grow: 1; overflow-y: auto; height: 100%;">
+        <h5 class="text-center mb-4">Resultados</h5>
+        <table class="table table-bordered text-center">
+          <thead class="table-dark">
+            <tr>
+              <th>Iteración</th>
+              <th>x</th>
+              <th>y (RK4)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let resultado of resultados; let i = index">
+              <td>{{ resultado.i }}</td>
+              <td>{{ resultado.x }}</td>
+              <td>{{ resultado.y }}</td>
+            </tr>            
+          </tbody>
+        </table>
+      </div>
     </div>
-    <div class="mb-3">
-      <label for="rkY0" class="form-label">y0:</label>
-      <input type="number" class="form-control rounded-3" [(ngModel)]="rkY0" name="rkY0">
-    </div>
-    <div class="mb-3">
-      <label for="rkH" class="form-label">h:</label>
-      <input type="number" class="form-control rounded-3" [(ngModel)]="rkH" name="rkH">
-    </div>
-    <div class="mb-3">
-      <label for="rkPasos" class="form-label">Pasos:</label>
-      <input type="number" class="form-control rounded-3" [(ngModel)]="rkPasos" name="rkPasos">
-    </div>
-    <button type="button" class="btn btn-dark w-100 rounded-3 mt-2 fw-bold" (click)="calcularRungeKutta()">Calcular</button>
-</form>
+  </div>
+</div>

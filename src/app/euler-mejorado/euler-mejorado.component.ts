@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Output } from '@angular/core';
-import { FormBuilder, FormsModule, Validators } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import * as math from 'mathjs';
 
 @Component({
@@ -11,24 +11,29 @@ import * as math from 'mathjs';
   styleUrl: './euler-mejorado.component.css',
 })
 export default class EulerMejoradoComponent {
-  constructor(private FormBuilder: FormBuilder) {}
+  @Output() returnButtonChange = new EventEmitter<boolean>();
 
-  @Output() resultadosCalculados = new EventEmitter<{ i:number, x:number; y:number }[]>();
+  regresarAlMenu(){
+    this.returnButtonChange.emit(false);
+  }
 
   eulerFunc:string = '';
   eulerX0:number = 0;
   eulerY0:number = 0;
   eulerH:number = 0;
   eulerPasos:number = 0;
+  resultados: { i:number, x:number; y:number, k1:number, k2:number, yNext:number}[] = [];
 
   ngOnInit() {}
 
   calcularEulerMejorado() {
 
     if(!this.eulerFunc || this.eulerH <= 0 || this.eulerPasos <= 0){
-      alert('Por favor, complete todos los campos correctamente.');
+      alert('Por favor, completa todos los campos antes de calcular.');
       return;
     }
+
+    this.resultados = []; 
 
     const x0 = this.eulerX0;
     const y0 = this.eulerY0;
@@ -38,18 +43,22 @@ export default class EulerMejoradoComponent {
     let x = x0;
     let y = y0;
 
-    const resultados: { i:number, x:number; y:number }[] = [{ i:0, x, y}];
-
-    for (let i = 1; i <= pasos; i++) {
+    for (let i = 0; i < pasos; i++) {
       const k1 = this.evaluarFuncion(this.eulerFunc, x, y);
       const k2 = this.evaluarFuncion(this.eulerFunc, x + h, y + h * k1);
-      y = y + (h / 2) * (k1 + k2);
+      const yNext = y + (h / 2) * (k1 + k2);
       x = x + h;
+      y = yNext;
 
-      resultados.push({ i, x:math.round(x, 4), y:math.round(y, 4) });
+      this.resultados.push({ 
+        i:i+1, 
+        x:math.round(x, 4), 
+        y:math.round(y, 4),
+        k1: math.round(k1, 4), 
+        k2: math.round(k2, 4), 
+        yNext: math.round(yNext, 4)
+      });
     }
-
-    this.resultadosCalculados.emit(resultados);
   }
 
   evaluarFuncion(func: string, x: number, y: number): number{

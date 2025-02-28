@@ -16,25 +16,19 @@ export class AppComponent {
   title = 'Calculadora-de-Metodos';
   hiddenButtons:boolean = false;
   returnButton:boolean = false;
-
   componenteActual: string = '';
-  resultados: { i:number, x:number; y:number }[] = [];
 
   cargarComponente(componente: string) {
     this.hiddenButtons = true;
     this.returnButton = true;
     this.componenteActual = componente;
-    this.resultados = [];
   }
 
-  mostrarResultados(resultados: { i:number, x:number; y:number }[]) {
-    this.resultados = resultados;
-  }
-
-  returnOption(){
-    this.componenteActual = '';
-    this.hiddenButtons = false;
-    this.returnButton = false;
-    this.resultados = [];
+  returnOption(showButton: boolean) {
+    this.returnButton = showButton;
+    if (!showButton) {
+      this.componenteActual = ''; 
+      this.hiddenButtons = false;
+    }
   }
 }

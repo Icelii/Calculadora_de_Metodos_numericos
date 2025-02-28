@@ -1,24 +1,65 @@
-<form #eulerForm="ngForm">
-    <div class="mb-3">
-      <label for="eulerFunc" class="form-label">Función (dy/dx):</label>
-      <input type="text" class="form-control rounded-3" [(ngModel)]="eulerFunc" name="eulerFunc" placeholder="Ej: y - x^2 + 1">
+<div class="container vh-100 d-flex justify-content-center align-items-start mt-4">
+  <div class="row w-100">
+    <div class="col-md-6 d-flex justify-content-center mb-2">
+      <div class="card p-4 shadow-lg rounded-4"
+        style="max-width: 400px; width: 100%; height: auto; align-self: start;">
+        <button type="button" class="btn-close" aria-label="Close" *ngIf="returnButtonChange" (click)="regresarAlMenu()"></button>
+        <h5 class="text-center mb-4">Euler mejorado</h5>
+        <form #eulerForm="ngForm">
+          <div class="mb-3">
+            <label for="eulerFunc" class="form-label">Función (dy/dx):</label>
+            <input type="text" class="form-control rounded-3" [(ngModel)]="eulerFunc" name="eulerFunc" placeholder="Ej: y - x^2 + 1">
+          </div>
+          <div class="mb-3">
+            <label for="eulerX0" class="form-label">x0:</label>
+            <input type="number" class="form-control rounded-3" [(ngModel)]="eulerX0" name="eulerX0">
+          </div>
+          <div class="mb-3">
+            <label for="eulerY0" class="form-label">y0:</label>
+            <input type="number" class="form-control rounded-3" [(ngModel)]="eulerY0" name="eulerY0">
+          </div>
+          <div class="mb-3">
+            <label for="eulerH" class="form-label">h:</label>
+            <input type="number" class="form-control rounded-3" [(ngModel)]="eulerH" name="eulerH">
+          </div>
+          <div class="mb-3">
+            <label for="eulerPasos" class="form-label">Pasos:</label>
+            <input type="number" class="form-control rounded-3" [(ngModel)]="eulerPasos" name="eulerPasos">
+          </div>
+          <button type="button" class="btn btn-dark w-100 rounded-3 mt-2 fw-bold" (click)="calcularEulerMejorado()">Calcular</button>
+          <button type="button" class="btn btn-dark w-100 rounded-3 mt-2 fw-bold" (click)="eulerForm.reset()">Limpiar</button>
+        </form>
+      </div>
     </div>
-    <div class="mb-3">
-      <label for="eulerX0" class="form-label">x0:</label>
-      <input type="number" class="form-control rounded-3"[(ngModel)]="eulerX0" name="eulerX0">
+
+    <!-- TABLA RESULTADOS -->
+    <div class="col-md-6 d-flex justify-content-center mb-4">
+      <div class="card p-4 shadow-lg rounded-4 w-100 table-responsive"
+        style="flex-grow: 1; overflow-y: auto; height: 100%;">
+        <h5 class="text-center mb-4">Resultados</h5>
+        <table class="table table-bordered text-center">
+          <thead class="table-dark">
+            <tr>
+              <th>Iteración</th>
+              <th>x<sub>n</sub></th>
+              <th>y<sub>n</sub></th>
+              <th>k<sub>1</sub></th>
+              <th>k<sub>2</sub></th>
+              <th>y<sub>n+1</sub></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let resultado of resultados; let i = index">
+              <td>{{ resultado.i }}</td>
+              <td>{{ resultado.x }}</td>
+              <td>{{ resultado.y }}</td>
+              <td>{{ resultado.k1 }}</td>
+              <td>{{ resultado.k2 }}</td>
+              <td>{{ resultado.yNext }}</td>
+            </tr>            
+          </tbody>
+        </table>
+      </div>
     </div>
-    <div class="mb-3">
-      <label for="eulerY0" class="form-label">y0:</label>
-      <input type="number" class="form-control rounded-3" [(ngModel)]="eulerY0" name="eulerY0">
-    </div>
-    <div class="mb-3">
-      <label for="eulerH" class="form-label">h:</label>
-      <input type="number" class="form-control rounded-3" [(ngModel)]="eulerH" name="eulerH">
-    </div>
-    <div class="mb-3">
-      <label for="eulerPasos" class="form-label">Pasos:</label>
-      <input type="number" class="form-control rounded-3" [(ngModel)]="eulerPasos" name="eulerPasos">
-    </div>
-    <button type="button" class="btn btn-dark w-100 roud-3 mt-2 fw-bold" (click)="calcularEulerMejorado()">Calcular</button>
-    <button type="button" class="btn btn-dark w-100 roud-3 mt-2 fw-bold" (click)="eulerForm.reset()">Limpiar</button>
-</form>
+  </div>
+</div>

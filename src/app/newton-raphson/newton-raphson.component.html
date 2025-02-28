@@ -1,23 +1,63 @@
-<form>
-    <div class="mb-3">
-      <label for="nrFunc" class="form-label">Función (f(x)):</label>
-      <input type="text" class="form-control rounded-3" [(ngModel)]="nrFunc" name="nrFunc" placeholder="Ej: x^2 - 2">
+<div class="container vh-100 d-flex justify-content-center align-items-start mt-4">
+  <div class="row w-100">
+    <div class="col-md-6 d-flex justify-content-center mb-2">
+      <div class="card p-4 shadow-lg rounded-4" 
+        style="max-width: 400px; width: 100%; height: auto; align-self: start;">
+        <button type="button" class="btn-close" aria-label="Close" *ngIf="returnButtonChange" (click)="regresarAlMenu()"></button>
+        <h5 class="text-center mb-4">Newton-Raphson</h5>
+        <form #newtonRapshonForm="ngForm">
+          <div class="mb-3">
+            <label for="nrFunc" class="form-label">Función (f(x)):</label>
+            <input type="text" class="form-control rounded-3" [(ngModel)]="nrFunc" name="nrFunc" placeholder="Ej: x^2 - 2">
+          </div>
+          <div class="mb-3">
+            <label for="nrDerivFunc" class="form-label">Derivada (f'(x)):</label>
+            <input type="text" class="form-control rounded-3" [(ngModel)]="nrDerivFunc" name="nrDerivFunc" placeholder="Ej: 2x">
+          </div>
+          <div class="mb-3">
+            <label for="nrX0" class="form-label">x0:</label>
+            <input type="number" class="form-control rounded-3" [(ngModel)]="nrX0" name="nrX0">
+          </div>
+          <div class="mb-3">
+            <label for="nrTol" class="form-label">Tolerancia:</label>
+            <input type="text" class="form-control rounded-3" [(ngModel)]="nrTol" name="nrTol">
+          </div>
+          <div class="mb-3">
+            <label for="nrMaxIter" class="form-label">Máximo de iteraciones:</label>
+            <input type="number" class="form-control rounded-3" [(ngModel)]="nrMaxIter" name="nrMaxIter">
+          </div>
+          <button type="button" class="btn btn-dark w-100 rounded-3 mt-2 fw-bold" (click)="calcularNewtonRaphson()">Calcular</button>
+          <button type="button" class="btn btn-dark w-100 rounded-3 mt-2 fw-bold" (click)="newtonRapshonForm.reset()">Limpiar</button>
+        </form>
+      </div>
     </div>
-    <div class="mb-3">
-      <label for="nrDerivFunc" class="form-label">Derivada (f'(x)):</label>
-      <input type="text" class="form-control rounded-3" [(ngModel)]="nrDerivFunc" name="nrDerivFunc" placeholder="Ej: 2x">
+
+    <!-- TABLA RESULTADOS -->
+    <div class="col-md-6 d-flex justify-content-center mb-4">
+      <div class="card p-4 shadow-lg rounded-4 w-100 table-responsive" 
+        style="flex-grow: 1; overflow-y: auto; height: 100%;">
+        <h5 class="text-center mb-4">Resultados</h5>
+        <table class="table table-bordered text-center">
+          <thead class="table-dark">
+            <tr>
+              <th>Iteración</th>
+              <th>x</th>
+              <th>f(x)</th>
+              <th>f'(x)</th>
+              <th>x1 (Aproximación)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let resultado of resultados; let i = index">
+              <td>{{ resultado.i }}</td>
+              <td>{{ resultado.x }}</td>
+              <td>{{ resultado.fx }}</td>
+              <td>{{ resultado.fPrime }}</td>
+              <td>{{ resultado.x1 }}</td>
+            </tr>            
+          </tbody>
+        </table>
+      </div>
     </div>
-    <div class="mb-3">
-      <label for="nrX0" class="form-label">x0:</label>
-      <input type="number" class="form-control rounded-3" [(ngModel)]="nrX0" name="nrX0">
-    </div>
-    <div class="mb-3">
-      <label for="nrTol" class="form-label">Tolerancia:</label>
-      <input type="text" class="form-control rounded-3" [(ngModel)]="nrTol" name="nrTol">
-    </div>
-    <div class="mb-3">
-      <label for="nrMaxIter" class="form-label">Máximo de iteraciones:</label>
-      <input type="number" class="form-control rounded-3" [(ngModel)]="nrMaxIter" name="nrMaxIter">
-    </div>
-    <button type="button" class="btn btn-dark w-100 rounded-3 mt-2 fw-bold" (click)="calcularNewtonRaphson()">Calcular</button>
-  </form>
+  </div>
+</div>
