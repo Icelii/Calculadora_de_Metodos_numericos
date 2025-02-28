@@ -1,0 +1,24 @@
+<form #eulerForm="ngForm">
+    <div class="mb-3">
+      <label for="eulerFunc" class="form-label">Función (dy/dx):</label>
+      <input type="text" class="form-control rounded-3" [(ngModel)]="eulerFunc" name="eulerFunc" placeholder="Ej: y - x^2 + 1">
+    </div>
+    <div class="mb-3">
+      <label for="eulerX0" class="form-label">x0:</label>
+      <input type="number" class="form-control rounded-3"[(ngModel)]="eulerX0" name="eulerX0">
+    </div>
+    <div class="mb-3">
+      <label for="eulerY0" class="form-label">y0:</label>
+      <input type="number" class="form-control rounded-3" [(ngModel)]="eulerY0" name="eulerY0">
+    </div>
+    <div class="mb-3">
+      <label for="eulerH" class="form-label">h:</label>
+      <input type="number" class="form-control rounded-3" [(ngModel)]="eulerH" name="eulerH">
+    </div>
+    <div class="mb-3">
+      <label for="eulerPasos" class="form-label">Pasos:</label>
+      <input type="number" class="form-control rounded-3" [(ngModel)]="eulerPasos" name="eulerPasos">
+    </div>
+    <button type="button" class="btn btn-dark w-100 roud-3 mt-2 fw-bold" (click)="calcularEulerMejorado()">Calcular</button>
+    <button type="button" class="btn btn-dark w-100 roud-3 mt-2 fw-bold" (click)="eulerForm.reset()">Limpiar</button>
+</form>
