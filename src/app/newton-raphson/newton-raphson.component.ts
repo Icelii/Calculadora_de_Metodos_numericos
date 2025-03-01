@@ -32,12 +32,13 @@ export default class NewtonRaphsonComponent {
       return;
     }
 
+    const nrFunction = this.nrFunc.toLowerCase();
     let x0 = this.nrX0;
     this.resultados = []; 
 
     for (let i = 0; i < this.nrMaxIter; i++) {
-      const f = this.evaluarFuncion(this.nrFunc, x0);
-      const fPrime = this.evaluarFuncion(this.nrDerivFunc, x0);
+      const f = this.evaluarFuncion(nrFunction, x0);
+      const fPrime = this.evaluarFuncion(nrFunction, x0);
       
       if (math.abs(fPrime) < this.nrTol) {
         alert('La derivada es demasiado pequeña, el método no converge.');

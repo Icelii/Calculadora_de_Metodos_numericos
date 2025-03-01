@@ -33,6 +33,7 @@ export default class RungeKuttaComponent {
       return;
     }
 
+    const rkFunction = this.rkFunc.toLowerCase();
     const x0 = this.rkX0;
     const y0 = this.rkY0;
     const h = this.rkH;
@@ -44,10 +45,10 @@ export default class RungeKuttaComponent {
     this.resultados = [];
 
     for (let i = 0; i < pasos; i++) {
-      const k1 = this.evaluarFuncion(this.rkFunc, x, y);
-      const k2 = this.evaluarFuncion(this.rkFunc, x + h / 2, y + (h / 2) * k1);
-      const k3 = this.evaluarFuncion(this.rkFunc, x + h / 2, y + (h / 2) * k2);
-      const k4 = this.evaluarFuncion(this.rkFunc, x + h, y + h * k3);
+      const k1 = this.evaluarFuncion(rkFunction, x, y);
+      const k2 = this.evaluarFuncion(rkFunction, x + h / 2, y + (h / 2) * k1);
+      const k3 = this.evaluarFuncion(rkFunction, x + h / 2, y + (h / 2) * k2);
+      const k4 = this.evaluarFuncion(rkFunction, x + h, y + h * k3);
       y = y + (h / 6) * (k1 + 2 * k2 + 2 * k3 + k4);
       x = x + h;
       this.resultados.push({ i:i+1, x: math.round(x, 4), y: math.round(y, 4) });

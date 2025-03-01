@@ -35,6 +35,7 @@ export default class EulerMejoradoComponent {
 
     this.resultados = []; 
 
+    const eFunc = this.eulerFunc.toLowerCase();
     const x0 = this.eulerX0;
     const y0 = this.eulerY0;
     const h = this.eulerH;
@@ -44,8 +45,8 @@ export default class EulerMejoradoComponent {
     let y = y0;
 
     for (let i = 0; i < pasos; i++) {
-      const k1 = this.evaluarFuncion(this.eulerFunc, x, y);
-      const k2 = this.evaluarFuncion(this.eulerFunc, x + h, y + h * k1);
+      const k1 = this.evaluarFuncion(eFunc, x, y);
+      const k2 = this.evaluarFuncion(eFunc, x + h, y + h * k1);
       const yNext = y + (h / 2) * (k1 + k2);
       x = x + h;
       y = yNext;
