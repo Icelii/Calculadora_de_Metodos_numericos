@@ -22,14 +22,34 @@ export default class EulerMejoradoComponent {
   eulerY0:number = 0;
   eulerH:number = 0;
   eulerPasos:number = 0;
-  resultados: { i:number, x:number; y:number, k1:number, k2:number, yNext:number}[] = [];
-
-  ngOnInit() {}
+  resultados: { i:number, x:number, k1:number, k2:number, yNext:number}[] = [];
 
   calcularEulerMejorado() {
 
     if(!this.eulerFunc || this.eulerH <= 0 || this.eulerPasos <= 0){
       alert('Por favor, completa todos los campos antes de calcular.');
+      return;
+    }
+
+    if (isNaN(this.eulerX0) || isNaN(this.eulerY0) || isNaN(this.eulerH) || isNaN(this.eulerPasos)) {
+      alert('Por favor, ingresa valores numéricos en todos los campos.');
+      return;
+    }
+
+    if (!Number.isInteger(this.eulerPasos) || this.eulerPasos <= 0) {
+      alert('El número de pasos debe ser un entero positivo.');
+      return;
+    }
+  
+    if (this.eulerH > 10) {
+      alert('El valor de h es demasiado grande. Intenta con un número menor.');
+      return;
+    }
+
+    try {
+      math.evaluate(this.eulerFunc, { x: 1, y: 1 });
+    } catch (error: any) {
+      alert(`La función ingresada no es válida.`);
       return;
     }
 
@@ -48,21 +68,25 @@ export default class EulerMejoradoComponent {
       const k1 = this.evaluarFuncion(eFunc, x, y);
       const k2 = this.evaluarFuncion(eFunc, x + h, y + h * k1);
       const yNext = y + (h / 2) * (k1 + k2);
-      x = x + h;
-      y = yNext;
 
       this.resultados.push({ 
-        i:i+1, 
-        x:math.round(x, 4), 
-        y:math.round(y, 4),
-        k1: math.round(k1, 4), 
-        k2: math.round(k2, 4), 
-        yNext: math.round(yNext, 4)
+        i:i, 
+        x:this.redondear(x),
+        k1:this.redondear(k1),
+        k2:this.redondear(k2), 
+        yNext:this.redondear(yNext)
       });
+
+      x = x + h;
+      y = yNext;
     }
   }
 
-  evaluarFuncion(func: string, x: number, y: number): number{
+  evaluarFuncion(func:string, x:number, y:number): number{
     return math.evaluate(func, { x, y });
+  }
+
+  redondear(valor:number): number{
+    return parseFloat(valor.toFixed(4));
   }
 }

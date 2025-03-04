@@ -22,7 +22,7 @@ export default class RungeKuttaComponent {
   rkY0:number = 0;
   rkH:number = 0;
   rkPasos:number = 0;
-  resultados: { i:number , x:number; y:number }[] = [];
+  resultados: { i:number , x:number; y:number, k1:number, k2:number, k3:number, k4:number, yNext:number }[] = [];
 
   ngOnInit() {}
 
@@ -30,6 +30,18 @@ export default class RungeKuttaComponent {
 
     if (!this.rkFunc || this.rkX0 === null || this.rkY0 === null || this.rkH === null || this.rkPasos === null) {
       alert('Por favor, completa todos los campos antes de calcular.');
+      return;
+    }
+
+    if (
+      isNaN(this.rkX0) || isNaN(this.rkY0) || isNaN(this.rkH) || isNaN(this.rkPasos)
+    ) {
+      alert('Por favor, ingresa valores numéricos válidos.');
+      return;
+    }
+
+    if (this.rkH <= 0 || this.rkPasos <= 0) {
+      alert('El valor de h y el número de pasos deben ser mayores que cero.');
       return;
     }
 
@@ -49,13 +61,29 @@ export default class RungeKuttaComponent {
       const k2 = this.evaluarFuncion(rkFunction, x + h / 2, y + (h / 2) * k1);
       const k3 = this.evaluarFuncion(rkFunction, x + h / 2, y + (h / 2) * k2);
       const k4 = this.evaluarFuncion(rkFunction, x + h, y + h * k3);
-      y = y + (h / 6) * (k1 + 2 * k2 + 2 * k3 + k4);
+      const y_next = y + (h / 6) * (k1 + 2 * k2 + 2 * k3 + k4);
+ 
+      this.resultados.push({ 
+        i: i, 
+        x: this.redondear(x), 
+        y: this.redondear(y),
+        k1: this.redondear(k1),
+        k2: this.redondear(k2),
+        k3: this.redondear(k3),
+        k4: this.redondear(k4),
+        yNext: this.redondear(y_next)
+      });
+
+      y = y_next;
       x = x + h;
-      this.resultados.push({ i:i+1, x: math.round(x, 4), y: math.round(y, 4) });
     }
   }
 
   evaluarFuncion(func: string, x: number, y: number) {
     return math.evaluate(func, { x, y });
+  }
+
+  redondear(valor:number): number{
+    return parseFloat(valor.toFixed(4));
   }
 }

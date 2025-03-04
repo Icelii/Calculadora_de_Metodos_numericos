@@ -8,23 +8,15 @@
         <form #newtonRapshonForm="ngForm">
           <div class="mb-3">
             <label for="nrFunc" class="form-label">Función (f(x)):</label>
-            <input type="text" class="form-control rounded-3" [(ngModel)]="nrFunc" name="nrFunc" placeholder="Ej: x^2 - 2">
+            <input type="text" class="form-control rounded-3" [(ngModel)]="nrFunc" name="nrFunc" placeholder="Ej: y - x^2 + 1 ó 2x*y">
           </div>
           <div class="mb-3">
-            <label for="nrDerivFunc" class="form-label">Derivada (f'(x)):</label>
-            <input type="text" class="form-control rounded-3" [(ngModel)]="nrDerivFunc" name="nrDerivFunc" placeholder="Ej: 2x">
-          </div>
-          <div class="mb-3">
-            <label for="nrX0" class="form-label">x0:</label>
+            <label for="nrX0" class="form-label">Aproximación inicial x<sub>0</sub></label>
             <input type="number" class="form-control rounded-3" [(ngModel)]="nrX0" name="nrX0">
           </div>
           <div class="mb-3">
             <label for="nrTol" class="form-label">Tolerancia:</label>
             <input type="text" class="form-control rounded-3" [(ngModel)]="nrTol" name="nrTol">
-          </div>
-          <div class="mb-3">
-            <label for="nrMaxIter" class="form-label">Máximo de iteraciones:</label>
-            <input type="number" class="form-control rounded-3" [(ngModel)]="nrMaxIter" name="nrMaxIter">
           </div>
           <button type="button" class="btn btn-dark w-100 rounded-3 mt-2 fw-bold" (click)="calcularNewtonRaphson()">Calcular</button>
           <button type="button" class="btn btn-dark w-100 rounded-3 mt-2 fw-bold" (click)="newtonRapshonForm.reset()">Limpiar</button>
@@ -42,8 +34,8 @@
             <tr>
               <th>Iteración</th>
               <th>x</th>
-              <th>f(x)</th>
-              <th>f'(x)</th>
+              <th>f(x<sub>n</sub>)</th>
+              <th>f'(x<sub>n</sub>)</th>
               <th>x1 (Aproximación)</th>
             </tr>
           </thead>

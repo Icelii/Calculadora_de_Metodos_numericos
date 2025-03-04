@@ -8,22 +8,22 @@
         <form #rkForm>
           <div class="mb-3">
             <label for="rkFunc" class="form-label">Función (dy/dx):</label>
-            <input type="text" class="form-control rounded-3" [(ngModel)]="rkFunc" name="rkFunc" placeholder="Ej: y - x^2 + 1">
+            <input type="text" class="form-control rounded-3" [(ngModel)]="rkFunc" name="rkFunc" placeholder="Ej: y - x^2 + 1 ó 2x*y">
           </div>
           <div class="mb-3">
-            <label for="rkX0" class="form-label">x0:</label>
+            <label for="rkX0" class="form-label">Valor inicial x<sub>0</sub></label>
             <input type="number" class="form-control rounded-3" [(ngModel)]="rkX0" name="rkX0">
           </div>
           <div class="mb-3">
-            <label for="rkY0" class="form-label">y0:</label>
+            <label for="rkY0" class="form-label">Valor inicial y<sub>0</sub></label>
             <input type="number" class="form-control rounded-3" [(ngModel)]="rkY0" name="rkY0">
           </div>
           <div class="mb-3">
-            <label for="rkH" class="form-label">h:</label>
+            <label for="rkH" class="form-label">Paso h:</label>
             <input type="number" class="form-control rounded-3" [(ngModel)]="rkH" name="rkH">
           </div>
           <div class="mb-3">
-            <label for="rkPasos" class="form-label">Pasos:</label>
+            <label for="rkPasos" class="form-label">Número de iteraciones:</label>
             <input type="number" class="form-control rounded-3" [(ngModel)]="rkPasos" name="rkPasos">
           </div>
           <button type="button" class="btn btn-dark w-100 rounded-3 mt-2 fw-bold" (click)="calcularRungeKutta()">Calcular</button>
@@ -40,9 +40,14 @@
         <table class="table table-bordered text-center">
           <thead class="table-dark">
             <tr>
-              <th>Iteración</th>
-              <th>x</th>
-              <th>y (RK4)</th>
+              <th>i</th>
+              <th>x<sub>n</sub></th>
+              <th>y<sub>n</sub></th>
+              <th>k1</th>
+              <th>k2</th>
+              <th>k3</th>
+              <th>k4</th>
+              <th>Y<sub>n+1</sub></th>
             </tr>
           </thead>
           <tbody>
@@ -50,6 +55,11 @@
               <td>{{ resultado.i }}</td>
               <td>{{ resultado.x }}</td>
               <td>{{ resultado.y }}</td>
+              <td>{{ resultado.k1 }}</td>
+              <td>{{ resultado.k2 }}</td>
+              <td>{{ resultado.k3 }}</td>
+              <td>{{ resultado.k4 }}</td>
+              <td>{{ resultado.yNext }}</td>
             </tr>            
           </tbody>
         </table>

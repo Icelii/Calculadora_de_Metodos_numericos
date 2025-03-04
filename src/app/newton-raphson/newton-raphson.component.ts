@@ -8,38 +8,65 @@ import * as math from 'mathjs';
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './newton-raphson.component.html',
-  styleUrl: './newton-raphson.component.css',
+  styleUrls: ['./newton-raphson.component.css'],
 })
 export default class NewtonRaphsonComponent {
   @Output() returnButtonChange = new EventEmitter<boolean>();
 
-  regresarAlMenu(){
+  regresarAlMenu() {
     this.returnButtonChange.emit(false);
   }
 
   nrFunc: string = '';
-  nrDerivFunc: string = '';
-  nrX0:number = 0;
-  nrTol:number = 0;
-  nrMaxIter:number = 0;
-  resultados: { i:number, x:number, fx:number, fPrime:number, x1:number }[] = []; 
+  nrX0: number = 0;
+  nrTol: number = 0;
+  resultados: { i: number; x: number; fx: number; fPrime: number; x1: number }[] = [];
 
   ngOnInit() {}
 
   calcularNewtonRaphson() {
-    if (!this.nrFunc || !this.nrDerivFunc || this.nrTol <= 0 || this.nrMaxIter <= 0) {
-      alert('Por favor, completa todos los campos antes de calcular.');
+    if (!this.nrFunc || this.nrFunc.trim() === '') {
+      alert('Por favor, ingresa una función válida.');
+      return;
+    }
+
+    if (isNaN(this.nrX0)) {
+      alert('Por favor, ingresa un valor numérico válido para x0.');
+      return;
+    }
+
+    if (this.nrTol <= 0) {
+      alert('La tolerancia debe ser un valor mayor que cero.');
       return;
     }
 
     const nrFunction = this.nrFunc.toLowerCase();
-    let x0 = this.nrX0;
-    this.resultados = []; 
+    let nrDerivFunc: string;
 
-    for (let i = 0; i < this.nrMaxIter; i++) {
-      const f = this.evaluarFuncion(nrFunction, x0);
-      const fPrime = this.evaluarFuncion(nrFunction, x0);
-      
+    try {
+      nrDerivFunc = math.derivative(nrFunction, 'x').toString();
+    } catch (error) {
+      alert('Hubo un error al derivar la función. Verifica si la función está bien escrita.');
+      return;
+    }
+
+    let x0 = this.nrX0;
+    let xPrev = x0;
+    this.resultados = [];
+    let i = 0;
+    const maxIterations = 100;
+
+    while (i < maxIterations) {
+      let f: number, fPrime: number;
+
+      try {
+        f = this.evaluarFuncion(nrFunction, x0);
+        fPrime = this.evaluarFuncion(nrDerivFunc, x0);
+      } catch (error) {
+        alert('Error al evaluar la función o su derivada. Verifica que la función esté correctamente ingresada.');
+        return;
+      }
+
       if (math.abs(fPrime) < this.nrTol) {
         alert('La derivada es demasiado pequeña, el método no converge.');
         break;
@@ -47,27 +74,39 @@ export default class NewtonRaphsonComponent {
 
       const x1 = x0 - f / fPrime;
 
-      this.resultados.push({ 
-        i: i+1, 
-        x: math.round(x0, 4), 
-        fx: math.round(f, 4),
-        fPrime: math.round(fPrime, 4),
-        x1: math.round(x1, 4)
+      if (isNaN(x1) || !isFinite(x1)) {
+        alert('Error: El valor calculado de x1 no es válido.');
+        break;
+      }
+
+      this.resultados.push({
+        i: i,
+        x: this.redondear(x0),
+        fx: this.redondear(f),
+        fPrime: this.redondear(fPrime),
+        x1: this.redondear(x1),
       });
 
-      if (math.abs(f) < this.nrTol) {
+      if (math.abs(f) < this.nrTol || math.abs(x1 - xPrev) < this.nrTol) {
+        //alert('Convergencia alcanzada.');
         break;
       }
 
-      if (math.abs(x1 - x0) < this.nrTol) {
-        break;
-      }
-
+      xPrev = x0;
       x0 = x1;
+      i++;
+    }
+
+    if (i >= maxIterations) {
+      alert('El número máximo de iteraciones se ha alcanzado sin converger.');
     }
   }
 
   evaluarFuncion(func: string, x: number) {
     return math.evaluate(func, { x });
+  }
+
+  redondear(valor: number): number {
+    return parseFloat(valor.toFixed(4));
   }
 }
