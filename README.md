@@ -88,6 +88,7 @@ firebase deploy
 
 ## 📁 Estructura del proyecto
 
+```
 src/
 ├── app/
 │   ├── euler-mejorado/     # Método de Euler mejorado
